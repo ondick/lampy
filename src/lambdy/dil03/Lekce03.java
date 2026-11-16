@@ -16,9 +16,9 @@ public class Lekce03 {
         // consumer();
         // interval();
         // transformace();
-         dodavatele();
+        // dodavatele();
         // pozdrav();
-        // jmena();
+         jmena();
     }
 
     // Spolecna ukazka: podle pokynu v prezentaci.
@@ -85,11 +85,27 @@ public class Lekce03 {
     // Uloha 3.5. Celkem tři řádky Ahoj; volání s nulou nic nepřidá.
     static void pozdrav() {
         // TODO 3.5: Vlastní Greeting. Zde pis sve reseni.
+        Greeting greeting = (text, count) -> {
+            for (int i = 0; i < count; i++) {
+                System.out.println(text);
+            }
+        };
+        greeting.repeat("Ahoj", 3);
+        greeting.repeat("Ahoj", 0);
     }
 
     // Uloha 3.6. Výpis ADAM a ALENA. Pro prázdný seznam žádný výpis.
     static void jmena() {
         List<String> names = List.of("Eva", "", "Adam", "Alena");
         // TODO 3.6: Zpracování jmen. Zde pis sve reseni.
+        Predicate<String> startsA = s -> s.startsWith("A");
+        Function<String, String> upper = s -> s.toUpperCase(Locale.ROOT);
+        Consumer<String> print = s -> System.out.println(s);
+        for (String name : names) {
+            if (startsA.test(name)) {
+                print.accept(upper.apply(name));
+            }
+        }
+
     }
 }

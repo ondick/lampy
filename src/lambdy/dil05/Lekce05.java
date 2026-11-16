@@ -1,49 +1,78 @@
 package lambdy.dil05;
 
-import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
-import java.time.*;
-import java.time.format.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Lekce05 {
     public static void main(String[] args) {
-        // Odkomentuj prave jedno volani podle pracovniho snimku.
-        // Prvni spusteni je bez vypisu; zatim neni zapnuta zadna uloha.
+        // Podle snímku odkomentuj právě jedno volání.
         // ukazkaLimit();
         // ukazkaSeznam();
-        // zachyceni();
-        // soucet();
-        // propojeni();
+        // zachyceni(); // 5.1
+        // soucet(); // 5.2
+         propojeni(); // 5.3, rozšiřující
     }
 
-    // Spolecna ukazka: podle pokynu v prezentaci.
+    // Ukázka zachycení limitu.
     static void ukazkaLimit() {
         int limit = 10;
-        // TODO ukazka: postupuj podle pracovniho snimku.
+        // TODO Doplň lambdu a spusť ji přes run().
+        Runnable r = () -> System.out.println(limit);
+        r.run();
     }
 
-    // Spolecna ukazka: podle pokynu v prezentaci.
+    // Ukázka změny obsahu seznamu.
     static void ukazkaSeznam() {
         List<String> names = new ArrayList<>();
         names.add("Eva");
-        // TODO ukazka: postupuj podle pracovniho snimku.
+        names.add("Adam");
+        Runnable read = () -> System.out.println(names);
+        read.run();
+        // TODO Doplň lambdu, přidej Adama a spusť výpis.
+
     }
 
-    // Uloha 5.1. A a C projdou, B ne. Opravená metoda vypíše 2.
+    // Úloha 5.1. Výstup 2.
     static void zachyceni() {
-        // TODO 5.1: Posuď a oprav zachycení. Zde pis sve reseni.
+        // TODO Ulož průběžnou hodnotu do snapshot a vypiš ji lambdou.
+        int changing = 1;
+        changing++;
+        int snaphot = changing;
+        Runnable r = () -> System.out.println(snaphot);
+        changing++;
+        r.run();
     }
 
-    // Uloha 5.2. Pro [1, 2, 3] dva řádky 6. Pro [] dva řádky 0.
+    // Úloha 5.2. Pro [1, 2, 3] výstup 6. Pro [] výstup 0.
     static void soucet() {
         List<Integer> numbers = List.of(1, 2, 3);
-        // TODO 5.2: Dvě verze součtu. Zde pis sve reseni.
+        // TODO Sečti čísla cyklem a vypiš součet.
+        int sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        System.out.println(sum);
     }
 
-    // Uloha 5.3. Adam a Alena. Prázdný vstup dá prázdný seznam bez výpisu.
+    // Rozšiřující úloha 5.3. Výstup Adam a Alena na dvou řádcích.
     static void propojeni() {
         List<String> names = List.of("Eva", "", "Adam", "Alena");
-        // TODO 5.3: Propojení naučených částí. Zde pis sve reseni.
+        String prefix ="A";
+        Predicate<String> zacinaPrefixem = name -> name.startsWith(prefix);
+        Function<String, Student> vytvor = Student::new;
+        Supplier<List<Student>> listSupplier = ArrayList::new;
+        Consumer<Student> print = s -> System.out.println(s.getName());
+        List<Student> students = listSupplier.get();
+        for (String name : names) {
+            if (zacinaPrefixem.test(name)) {
+                students.add(vytvor.apply(name));
+                print.accept(vytvor.apply(name));
+            }
+        }
+
     }
 }
